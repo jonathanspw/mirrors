@@ -1,6 +1,6 @@
 ---
 name: Validate YAML Syntax
-on: [push]
+on: [push, pull_request]
 jobs:
   Lint:
     runs-on: [self-hosted, linux]
