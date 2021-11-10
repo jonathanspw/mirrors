@@ -16,9 +16,11 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: pwd
-        run: pwd
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - run:
+        echo: ${{ steps.files.outputs.all }}
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
         with:
-          path: ./mirrors.d/almalinux-nforce.com.yml
+          path: ./mirrors.d/almalinux-nforce.com.yml ./mirrors.d/mirrors.tino.org.yml
