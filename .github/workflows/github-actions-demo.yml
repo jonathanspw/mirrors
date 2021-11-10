@@ -16,9 +16,6 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-      - name: Get yamllint version
-        run: yamllint --version
-
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v2
 
