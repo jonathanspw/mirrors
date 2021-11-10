@@ -34,7 +34,7 @@ jobs:
               CITY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.city)
               NOMINATIM_LOOKUP=$(curl -s "https://nominatim.openstreetmap.org/search?city=atlanta&state=georgia&country=us&format=json")
               MATCHES=$NOMINATIM_LOOKUP | jq length
-              if [ "$MATCHES" -lt "1" ]; then
+              if [[ "$MATCHES" == "0" ]; then
                 exit 1
               else
                 echo $NOMINATIM_LOOKUP | jq
