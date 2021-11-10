@@ -38,7 +38,7 @@ jobs:
               if [[ "$MATCHES" == "0" ]]; then
                 exit 1
               else
-                echo $NOMINATIM_LOOKUP | jq
+                echo $NOMINATIM_LOOKUP
               fi
             fi
           done
