@@ -18,8 +18,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - id: files
         uses: jitterbit/get-changed-files@v1
-      - run:
-        echo: ${{ steps.files.outputs.all }}
+      - run: echo ${{ steps.files.outputs.all }}
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
         with:
