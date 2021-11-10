@@ -24,6 +24,15 @@ jobs:
           for file in ${{ steps.files.outputs.all }}; do
             yamllint -d "{rules: {line-length: {max: 120}}}" -f github ${{ github.workspace }}/$file
           done
+      - name: Validate nominatim lookup
+        run: |
+          for file in ${{ steps.files.outputs.all }}; do
+            if [[ $file == mirrors.d/* ]] ;
+            then
+              echo "$file changed"
+            fi
+          done
 
-      - name: Run yamllint
-        uses: frenck/action-yamllint@v1
+# in the future hopefully we can lint all yaml files
+#      - name: Run yamllint
+#        uses: frenck/action-yamllint@v1
