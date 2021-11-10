@@ -21,7 +21,7 @@ jobs:
       - run: echo ${{ steps.files.outputs.all }}
       - name: Lint YAML Files
         run: |
-          for file in ${{ steps.files.outputs.all }}; do
+          for file in "${{ steps.files.outputs.all }}"; do
             yamllint -f github ${{ github.workspace }}/$file
           done
 
