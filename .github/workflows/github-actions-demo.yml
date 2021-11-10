@@ -19,7 +19,11 @@ jobs:
       - id: files
         uses: jitterbit/get-changed-files@v1
       - run: echo ${{ steps.files.outputs.all }}
+      - name: Lint YAML Files
+        run: |
+          for file in ${{ steps.files.outputs.all }}; do
+            yamllint -f github ${{ github.workspace }}/$file
+          done
+
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
-        with:
-          path: ./mirrors.d/almalinux-nforce.com.yml ./mirrors.d/mirrors.tino.org.yml
