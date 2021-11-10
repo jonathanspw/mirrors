@@ -16,8 +16,10 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-
+      - name: pwd
+        run: pwd
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
         with:
-          path: ${{ github.workspace }}/mirrors.d/atl.mirrors.knownhost.com
+          path: |
+            ${{ github.workspace }}/mirrors.d/atl.mirrors.knownhost.com
