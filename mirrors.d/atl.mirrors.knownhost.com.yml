@@ -1,5 +1,5 @@
 ---
-name: atl.mirrors.knownhost.com
+name: atl.mirrors.knownhost.com.test
 address:
   http: http://atl.mirrors.knownhost.com/linux/almalinux
   https: https://atl.mirrors.knownhost.com/linux/almalinux
