@@ -30,11 +30,11 @@ jobs:
             if [[ $file == mirrors.d/* ]] ;
             then
               COUNTRY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.country)
-              STATE_PROVINCE=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.state_province)
+              STATE=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.state_province)
               CITY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.city)
-              NOMINATIM_LOOKUP=$(curl -s "https://nominatim.openstreetmap.org/search?city=atlanta&state=georgia&country=us&format=json")
+              NOMINATIM_LOOKUP=$(curl -s "https://nominatim.openstreetmap.org/search?city=$CITY&state=$STATE&country=$COUNTRY&format=json")
               MATCHES=$NOMINATIM_LOOKUP | jq length
-              if [[ "$MATCHES" == "0" ]; then
+              if [[ "$MATCHES" == "0" ]]; then
                 exit 1
               else
                 echo $NOMINATIM_LOOKUP | jq
