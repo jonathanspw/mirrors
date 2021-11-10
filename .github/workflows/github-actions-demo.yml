@@ -29,6 +29,7 @@ jobs:
           for file in ${{ steps.files.outputs.all }}; do
             if [[ $file == mirrors.d/* ]] ;
             then
+              echo "Checking geolocation data against Nominatim for $file"
               COUNTRY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.country)
               STATE=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.state_province)
               CITY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.city)
@@ -36,9 +37,10 @@ jobs:
               MATCHES=$(echo $NOMINATIM_LOOKUP | jq length)
               echo $MATCHES
               if [[ "$MATCHES" == "0" ]]; then
+                echo "$file contains invalid geolocation data"
                 exit 1
               else
-                echo $NOMINATIM_LOOKUP
+                echo "Valid geolocation data found for $file"
               fi
             fi
           done
