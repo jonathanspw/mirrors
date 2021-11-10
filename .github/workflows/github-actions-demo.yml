@@ -22,7 +22,7 @@ jobs:
       - name: Lint YAML Files
         run: |
           for file in ${{ steps.files.outputs.all }}; do
-            yamllint -f github ${{ github.workspace }}/$file
+            yamllint -d "{rules: {line-length: {max: 120}}}" -f github ${{ github.workspace }}/$file
           done
 
       - name: Run yamllint
