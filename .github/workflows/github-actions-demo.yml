@@ -23,4 +23,4 @@ jobs:
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
         with:
-          path: mirrors.d/atl.mirrors.knownhost.com
+          path: ${{ github.workspace }}/mirrors.d/atl.mirrors.knownhost.com
