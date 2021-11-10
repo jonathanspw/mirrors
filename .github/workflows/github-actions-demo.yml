@@ -29,7 +29,10 @@ jobs:
           for file in ${{ steps.files.outputs.all }}; do
             if [[ $file == mirrors.d/* ]] ;
             then
-              echo "$file changed"
+              COUNTRY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.country)
+              STATE_PROVINCE=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.state_province)
+              CITY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.city)
+              echo "$COUNTRY $STATE_PROVINCE $CITY"
             fi
           done
 
