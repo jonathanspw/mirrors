@@ -21,5 +21,4 @@ jobs:
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1
         with:
-          path: |
-            ${{ github.workspace }}/mirrors.d/atl.mirrors.knownhost.com
+          path: ./mirrors.d/almalinux-nforce.com.yml
