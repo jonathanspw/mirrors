@@ -32,7 +32,12 @@ jobs:
               COUNTRY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.country)
               STATE_PROVINCE=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.state_province)
               CITY=$(cat ${{ github.workspace }}/$file | shyaml get-value geolocation.city)
-              echo "$COUNTRY $STATE_PROVINCE $CITY"
+              NOMINATIM_LOOKUP=$(curl -s "https://nominatim.openstreetmap.org/search?city=atlanta&state=georgia&country=us&format=json")
+              if (( $(NOMINATIM_LOOKUP | jq length) < 1 )); then
+                exit 1
+              else
+                echo $NOMINATIM_LOOKUP | jq
+              fi
             fi
           done
 
