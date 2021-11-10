@@ -19,16 +19,8 @@ jobs:
       - name: Get yamllint version
         run: yamllint --version
 
-      - id: lint-with-config
-        name: lint with config
-        uses: ./
-        with:
-          file_or_dir: test
-          config_data: |
-            extends: default
-            ignore: nok.yaml
-            rules:
-              new-line-at-end-of-file:
-                level: warning
-              trailing-spaces:
-                level: warning
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v2
+
+      - name: 🚀 Run yamllint
+        uses: frenck/action-yamllint@v1
