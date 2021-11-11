@@ -4,6 +4,8 @@ on: [pull_request]
 jobs:
   get-changed-files:
     runs-on: ubuntu-latest
+    outputs:
+      changed_files: ${{ steps.changed_files.outputs.changed_files}}
     steps:
       - run: |
           API_URL=$(jq --raw-output .pull_request._links.self.href "$GITHUB_EVENT_PATH")
@@ -13,8 +15,11 @@ jobs:
             --header "accept: application/vnd.github.v3+json" \
             --header "authorization: token ${{secrets.GITHUB_TOKEN}}")
           CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
+      - id: changed_files
+        run: echo "::set-output name=test::$CHANGED_FILES"
   yaml-lint:
     runs-on: ubuntu-latest
+    needs: get-changed-files
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -27,10 +32,10 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - run: echo $CHANGED_FILES
+      - run: echo ${{ needs.changed_files.outputs.changed_files }}
       - name: Lint YAML Files
         run: |
-          for file in $CHANGED_FILES; do
+          for file in ${{ needs.changed_files.outputs.changed_files }}; do
             yamllint -d "{rules: {line-length: {max: 999}}}" -f github ${{ github.workspace }}/$file
           done
       # in the future hopefully we can lint all yaml files
