@@ -35,7 +35,7 @@ jobs:
 #        run: |
 #          ls ${{ github.workspace }}
 #      - run: echo "This job's status is ${{ job.status }}."
-#      - run: echo ${{needs.changedfiles.outputs.all}}
+      - run: echo ${{needs.changedfiles.outputs.all}}
       - name: Lint YAML Files
         run: |
           for file in ${{ needs.changed_files.outputs.changed_files }}; do
