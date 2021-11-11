@@ -1,9 +1,9 @@
 ---
 name: Validate YAML Syntax
-on: [push, pull_request]
+on: [pull_request]
 jobs:
-  Lint:
-    runs-on: [self-hosted, linux]
+  yaml-lint:
+    runs-on: ubuntu-latest
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -24,6 +24,12 @@ jobs:
           for file in ${{ steps.files.outputs.all }}; do
             yamllint -d "{rules: {line-length: {max: 999}}}" -f github ${{ github.workspace }}/$file
           done
+      # in the future hopefully we can lint all yaml files
+      #      - name: Run yamllint
+      #        uses: frenck/action-yamllint@v1
+  nominatim-check:
+    runs-on: ubuntu-latest
+    steps:
       - name: Validate nominatim lookup
         run: |
           for file in ${{ steps.files.outputs.all }}; do
@@ -44,7 +50,3 @@ jobs:
               fi
             fi
           done
-
-# in the future hopefully we can lint all yaml files
-#      - name: Run yamllint
-#        uses: frenck/action-yamllint@v1
