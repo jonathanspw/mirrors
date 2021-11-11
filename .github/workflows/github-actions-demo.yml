@@ -2,6 +2,17 @@
 name: Validate YAML Syntax
 on: [pull_request]
 jobs:
+  get-changed-files:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          API_URL=$(jq --raw-output .pull_request._links.self.href "$GITHUB_EVENT_PATH")
+
+          FILES=$(curl --request GET \
+            --url "$API_URL/files?per_page=100" \
+            --header "accept: application/vnd.github.v3+json" \
+            --header "authorization: token ${{secrets.GITHUB_TOKEN}}")
+          CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
   yaml-lint:
     runs-on: ubuntu-latest
     steps:
@@ -16,20 +27,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - run: |
-          API_URL=$(jq --raw-output .pull_request._links.self.href "$GITHUB_EVENT_PATH")
-
-          FILES=$(curl --request GET \
-            --url "$API_URL/files?per_page=100" \
-            --header "accept: application/vnd.github.v3+json" \
-            --header "authorization: token ${{secrets.GITHUB_TOKEN}}")
-          echo $FILES
-
-          CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
-          echo $CHANGED_FILES
-#      - id: files
-#        uses: jitterbit/get-changed-files@v1
-#      - run: echo ${{ steps.files.outputs.all }}
+      - run: echo $CHANGED_FILES
       - name: Lint YAML Files
         run: |
           for file in $CHANGED_FILES; do
