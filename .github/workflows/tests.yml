@@ -17,7 +17,9 @@ jobs:
         id: changes
         # Set outputs using the command.
         run: |
-          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
+          echo "::set-output name=all::$CHANGED_FILES"
+          echo "$CHANGED_FILES"
   yaml-lint:
     runs-on: ubuntu-latest
     needs: changedfiles
@@ -51,7 +53,7 @@ jobs:
           for file in ${{ needs.changed_files.outputs.changed_files }}; do
             if [[ $file == mirrors.d/* ]] ;
             then
-              pajv validate -s ci/mirror_config_schema.json -d $file
+              pajv validate -s ci/mirror_config_schema.json -d ${{ github.workspace }}/$file
             fi
           done
   nominatim-check:
