@@ -1,5 +1,5 @@
 ---
-name: mirror.hostup.orgd
+name: mirror.hostup.org
 address:
   http: http://mirror.hostup.org/almalinux/
   https: https://mirror.hostup.org/almalinux/
