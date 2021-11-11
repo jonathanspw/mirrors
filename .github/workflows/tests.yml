@@ -42,9 +42,21 @@ jobs:
       # in the future hopefully we can lint all yaml files
       #      - name: Run yamllint
       #        uses: frenck/action-yamllint@v1
-  nominatim-check:
+  yaml-schema:
     runs-on: ubuntu-latest
     needs: [changedfiles,yaml-lint]
+    steps:
+      - run: npm install -g pajv
+      - run: |
+          for file in ${{ steps.files.outputs.all }}; do
+            if [[ $file == mirrors.d/* ]] ;
+            then
+              pajv validate -s ci/mirror_config_schema.json -d $file
+            fi
+          done
+  nominatim-check:
+    runs-on: ubuntu-latest
+    needs: [changedfiles,yaml-lint,yaml-schema]
     steps:
       - name: Validate nominatim lookup2
         run: |
