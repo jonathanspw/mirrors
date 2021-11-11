@@ -1,5 +1,5 @@
 ---
-name: Validate YAML Syntax
+name: Mirror PR Tests
 on: [pull_request]
 jobs:
   changedfiles:
