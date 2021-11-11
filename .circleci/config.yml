@@ -11,8 +11,7 @@ commands:
         type: string
     steps:
       - run: |
-          pwd
-          ls -lah
+         ls -lah .circleci
           # `|| :` is used to avoid exit when there is no changed file which matches the pattern.
           changed_files=$(bash ./circleci/get_changed_files.sh "<< parameters.pattern >>" || :)
           num_changed_files=$(echo "$changed_files" | grep -v -e '^\s*$' | wc -l || :)
