@@ -1,5 +1,7 @@
 #!/bin/bash
 
+printenv
+
 if [[ -z "${CIRCLE_PULL_REQUEST}" ]];
 then
 	echo "This is not a pull request, no PHPCS needed."
