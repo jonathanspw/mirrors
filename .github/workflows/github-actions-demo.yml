@@ -15,6 +15,7 @@ jobs:
             --header "accept: application/vnd.github.v3+json" \
             --header "authorization: token ${{secrets.GITHUB_TOKEN}}")
           CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
+      - run: echo $CHANGED_FILES
       - id: changed_files
         run: echo "::set-output name=test::$CHANGED_FILES"
   yaml-lint:
