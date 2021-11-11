@@ -44,7 +44,7 @@ jobs:
       #        uses: frenck/action-yamllint@v1
   nominatim-check:
     runs-on: ubuntu-latest
-    needs: changedfiles
+    needs: [changedfiles,yaml-lint]
     steps:
       - name: Validate nominatim lookup2
         run: |
