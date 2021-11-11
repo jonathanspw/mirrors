@@ -2,25 +2,23 @@
 name: Validate YAML Syntax
 on: [pull_request]
 jobs:
-  get-changed-files:
+  changedfiles:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
     outputs:
-      changed_files: ${{ steps.changed_files.outputs.changed_files}}
+      all: ${{ steps.changes.outputs.all}}
     steps:
-      - run: |
-          API_URL=$(jq --raw-output .pull_request._links.self.href "$GITHUB_EVENT_PATH")
-
-          FILES=$(curl --request GET \
-            --url "$API_URL/files?per_page=100" \
-            --header "accept: application/vnd.github.v3+json" \
-            --header "authorization: token ${{secrets.GITHUB_TOKEN}}")
-          CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
-      - run: echo $CHANGED_FILES
-      - id: changed_files
-        run: echo "::set-output name=test::$CHANGED_FILES"
+      # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
   yaml-lint:
     runs-on: ubuntu-latest
-    needs: get-changed-files
+    needs: changedfiles
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -33,7 +31,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - run: echo ${{ needs.changed_files.outputs.changed_files }}
+      - run: echo ${{needs.changedfiles.outputs.all}}
       - name: Lint YAML Files
         run: |
           for file in ${{ needs.changed_files.outputs.changed_files }}; do
