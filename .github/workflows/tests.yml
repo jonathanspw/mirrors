@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: changedfiles
     steps:
-      - name: Validate nominatim lookup
+      - name: Validate nominatim lookup2
         run: |
           for file in ${{ steps.files.outputs.all }}; do
             if [[ $file == mirrors.d/* ]] ;
