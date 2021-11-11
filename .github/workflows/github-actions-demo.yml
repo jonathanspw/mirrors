@@ -27,12 +27,12 @@ jobs:
 
           CHANGED_FILES=$(echo $FILES | jq '.[] | select(.status == "added" or .status == "modified") | .filename')
           echo $CHANGED_FILES
-      - id: files
-        uses: jitterbit/get-changed-files@v1
-      - run: echo ${{ steps.files.outputs.all }}
+#      - id: files
+#        uses: jitterbit/get-changed-files@v1
+#      - run: echo ${{ steps.files.outputs.all }}
       - name: Lint YAML Files
         run: |
-          for file in ${{ steps.files.outputs.all }}; do
+          for file in $CHANGED_FILES; do
             yamllint -d "{rules: {line-length: {max: 999}}}" -f github ${{ github.workspace }}/$file
           done
       # in the future hopefully we can lint all yaml files
