@@ -48,7 +48,7 @@ jobs:
     steps:
       - run: npm install -g pajv
       - run: |
-          for file in ${{ steps.files.outputs.all }}; do
+          for file in ${{ needs.changed_files.outputs.changed_files }}; do
             if [[ $file == mirrors.d/* ]] ;
             then
               pajv validate -s ci/mirror_config_schema.json -d $file
@@ -60,7 +60,7 @@ jobs:
     steps:
       - name: Validate nominatim lookup2
         run: |
-          for file in ${{ steps.files.outputs.all }}; do
+          for file in ${{ needs.changed_files.outputs.changed_files }}; do
             if [[ $file == mirrors.d/* ]] ;
             then
               echo "Checking geolocation data against Nominatim for $file"
