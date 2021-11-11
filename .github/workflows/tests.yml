@@ -34,6 +34,10 @@ jobs:
 #          ls ${{ github.workspace }}
 #      - run: echo "This job's status is ${{ job.status }}."
 #      - run: echo ${{needs.changedfiles.outputs.all}}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Lint YAML Files
         run: |
           for file in ${{needs.changedfiles.outputs.all}}; do
@@ -46,6 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [changedfiles,yaml-lint]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - run: npm install -g pajv
       - run: |
           for file in ${{needs.changedfiles.outputs.all}}; do
@@ -58,6 +66,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [changedfiles,yaml-lint,yaml-schema]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Validate nominatim lookup2
         run: |
           for file in ${{needs.changedfiles.outputs.all}}; do
