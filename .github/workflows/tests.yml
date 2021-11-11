@@ -70,6 +70,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
+      - run: pip install shyaml
       - name: Validate nominatim lookup2
         run: |
           for file in ${{needs.changedfiles.outputs.all}}; do
